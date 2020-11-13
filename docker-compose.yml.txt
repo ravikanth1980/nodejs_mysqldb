@@ -1,0 +1,36 @@
+version: "3"
+services:
+  nodejs:
+    build:
+      context: .
+    image: 1980ravi/node-app-2
+    environment:
+      DATABASE_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: test_dev1_ops
+      MYSQL_USER: devops
+      MYSQL_PASSWORD: Cybage@123
+    depends_on:
+      - database
+    env_file:
+      - ./.env
+    links:
+      - database
+    ports:
+      - "3000:3000"
+    container_name: "nodejs10"
+    restart: on-failure
+  database:
+    image: "mysql:5.7"
+    container_name: "mysql"
+    ports:
+      - "6603:3306"
+    volumes:
+      - ./sql-query.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      DATABASE_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_dev1_ops
+      MYSQL_USER: devops
+      MYSQL_PASSWORD: Cybage@123
+                                                                                        1,7           Top
